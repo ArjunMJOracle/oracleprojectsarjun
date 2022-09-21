@@ -26,15 +26,3 @@ data "oci_core_images" "OSImage" {
     regex  = true
   }
 }
-
-# Compute VNIC Attachment DataSource
-data "oci_core_vnic_attachments" "exampleserver1_VNIC1_attach" {
-  availability_domain = var.availablity_domain_name == "" ? lookup(data.oci_identity_availability_domains.ADs.availability_domains[0], "name") : var.availablity_domain_name
-  compartment_id      = oci_identity_compartment.examplestack1.id
-  instance_id         = oci_core_instance.exampleserver1.id
-}
-
-# Compute VNIC DataSource
-data "oci_core_vnic" "exampleserver1_VNIC1" {
-  vnic_id = data.oci_core_vnic_attachments.exampleserver1_VNIC1_attach.vnic_attachments.0.vnic_id
-}
